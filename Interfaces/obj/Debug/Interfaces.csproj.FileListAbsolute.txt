@@ -1,0 +1,4 @@
+d:\Project\Forum\Interfaces\bin\Debug\Interfaces.dll
+d:\Project\Forum\Interfaces\bin\Debug\Interfaces.pdb
+d:\Project\Forum\Interfaces\obj\Debug\Interfaces.dll
+d:\Project\Forum\Interfaces\obj\Debug\Interfaces.pdb

@@ -1,0 +1,9 @@
+d:\Project\Forum\Bll.Interface\obj\Debug\Bll.Interface.csprojResolveAssemblyReference.cache
+d:\Project\Forum\Bll.Interface\bin\Debug\Bll.Interface.dll
+d:\Project\Forum\Bll.Interface\bin\Debug\Bll.Interface.pdb
+d:\Project\Forum\Bll.Interface\bin\Debug\Dal.Interface.dll
+d:\Project\Forum\Bll.Interface\bin\Debug\Interfaces.dll
+d:\Project\Forum\Bll.Interface\bin\Debug\Dal.Interface.pdb
+d:\Project\Forum\Bll.Interface\bin\Debug\Interfaces.pdb
+d:\Project\Forum\Bll.Interface\obj\Debug\Bll.Interface.dll
+d:\Project\Forum\Bll.Interface\obj\Debug\Bll.Interface.pdb

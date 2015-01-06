@@ -1,0 +1,14 @@
+d:\Project\Forum\Dal.Implementation\obj\Debug\Dal.Implementation.csprojResolveAssemblyReference.cache
+d:\Project\Forum\Dal.Implementation\bin\Debug\Dal.Implementation.dll.config
+d:\Project\Forum\Dal.Implementation\bin\Debug\Dal.Implementation.dll
+d:\Project\Forum\Dal.Implementation\bin\Debug\Dal.Implementation.pdb
+d:\Project\Forum\Dal.Implementation\bin\Debug\Dal.Interface.dll
+d:\Project\Forum\Dal.Implementation\bin\Debug\EntityFramework.dll
+d:\Project\Forum\Dal.Implementation\bin\Debug\EntityFramework.SqlServer.dll
+d:\Project\Forum\Dal.Implementation\bin\Debug\Interfaces.dll
+d:\Project\Forum\Dal.Implementation\bin\Debug\Dal.Interface.pdb
+d:\Project\Forum\Dal.Implementation\bin\Debug\Interfaces.pdb
+d:\Project\Forum\Dal.Implementation\bin\Debug\EntityFramework.xml
+d:\Project\Forum\Dal.Implementation\bin\Debug\EntityFramework.SqlServer.xml
+d:\Project\Forum\Dal.Implementation\obj\Debug\Dal.Implementation.dll
+d:\Project\Forum\Dal.Implementation\obj\Debug\Dal.Implementation.pdb

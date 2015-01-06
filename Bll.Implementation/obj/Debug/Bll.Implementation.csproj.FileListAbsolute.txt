@@ -1,0 +1,15 @@
+d:\Project\Forum\Bll.Implementation\obj\Debug\Bll.Implementation.csprojResolveAssemblyReference.cache
+d:\Project\Forum\Bll.Implementation\bin\Debug\Bll.Implementation.dll
+d:\Project\Forum\Bll.Implementation\bin\Debug\Bll.Implementation.pdb
+d:\Project\Forum\Bll.Implementation\bin\Debug\Bll.Interface.dll
+d:\Project\Forum\Bll.Implementation\bin\Debug\Dal.Implementation.dll
+d:\Project\Forum\Bll.Implementation\bin\Debug\Dal.Interface.dll
+d:\Project\Forum\Bll.Implementation\bin\Debug\Interfaces.dll
+d:\Project\Forum\Bll.Implementation\bin\Debug\EntityFramework.dll
+d:\Project\Forum\Bll.Implementation\bin\Debug\Bll.Interface.pdb
+d:\Project\Forum\Bll.Implementation\bin\Debug\Dal.Implementation.pdb
+d:\Project\Forum\Bll.Implementation\bin\Debug\Dal.Interface.pdb
+d:\Project\Forum\Bll.Implementation\bin\Debug\Interfaces.pdb
+d:\Project\Forum\Bll.Implementation\bin\Debug\EntityFramework.xml
+d:\Project\Forum\Bll.Implementation\obj\Debug\Bll.Implementation.dll
+d:\Project\Forum\Bll.Implementation\obj\Debug\Bll.Implementation.pdb

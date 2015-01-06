@@ -1,0 +1,65 @@
+﻿@model ForumWebApplication.Models.UserViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Info</title>
+</head>
+<body>
+    <fieldset>
+        <legend>UserViewModel</legend>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Name)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Name)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Login)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Login)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Mail)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Mail)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Avatar)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Avatar)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.RegistrationDate)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.RegistrationDate)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.Pass)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.Pass)
+        </div>
+    </fieldset>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>
