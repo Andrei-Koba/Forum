@@ -14,12 +14,12 @@ namespace ForumWebApplication.Providers
     public class CustomRoleProvider: RoleProvider
     {
 
-        public override bool IsUserInRole(string login, string roleName)
+        public override bool IsUserInRole(string username, string roleName)
         {
             IKernel kernel = NinjectWebCommon.CreateKernel();
             using (IUserService userService = kernel.Get<IUserService>())
             {
-                User user = userService.GetByLogin(login);
+                User user = userService.GetByLogin(username);
 
                 if (user == null) return false;
 
@@ -55,6 +55,7 @@ namespace ForumWebApplication.Providers
                 roleService.Add(newRole);
             }
         }
+
 
         public override void AddUsersToRoles(string[] usernames, string[] roleNames)
         {

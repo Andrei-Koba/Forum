@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.Configuration;
 using ForumWebApplication.Models;
 using Bll.Interface.DataServices;
 using Bll.Interface.Entities;
@@ -19,22 +20,29 @@ namespace ForumWebApplication.Controllers
         private readonly IUserService _userService;
         private ViewUserMapper _mapper;
         private IRoleService _roles;
+        private CustomRoleProvider _rp;
 
         public AccountController(IUserService userService, IRoleService roles)
         {
             _userService = userService;
             _roles = roles;
             _mapper = new ViewUserMapper(_roles);
+            _rp = new CustomRoleProvider();
         }
 
         public ActionResult Login()
         {
+            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
+            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             return View();
+
         }
         
         [HttpPost]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
+            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
+            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             if (ModelState.IsValid)
             {
                 if (ValidateUser(model.UserName, model.Password))
@@ -46,7 +54,7 @@ namespace ForumWebApplication.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Info");
+                        return RedirectToAction("Index","Home");
                         //return RedirectToAction("Index", "Request");
                     }
                 }
@@ -62,12 +70,16 @@ namespace ForumWebApplication.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Register()
         {
-            return View();
+            RegisterViewModel reg = new RegisterViewModel();
+            reg.AddedDate = DateTime.Now;
+            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
+            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
+            return View(reg);
         }
 
         [HttpPost]
@@ -78,7 +90,8 @@ namespace ForumWebApplication.Controllers
             //    ModelState.AddModelError("Captcha", "Текст с картинки введен неверно");
             //    return View(viewModel);
             //}
-
+            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
+            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             var anyUser = _userService.GetAll().Any(u => u.Mail.Contains(regModel.Email));
             if (anyUser)
             {
@@ -96,21 +109,21 @@ namespace ForumWebApplication.Controllers
 
             if (ModelState.IsValid)
             {
+                
                 UserViewModel viewModel = new UserViewModel()
                 {
                     Name = regModel.Name,
                     Login = regModel.Login,
                     Pass = regModel.Password,
                     RegistrationDate = DateTime.Now,
-                    Avatar = regModel.AvatarPath,
+                    Avatar = "image.png",
                     Mail = regModel.Email
                 };
                 CustomMembershipProvider provider = new CustomMembershipProvider();
                 MembershipUser mUser = provider.CreateUser(viewModel);
                 if (mUser != null)
                 {
-                    FormsAuthentication.SetAuthCookie(viewModel.Mail, false);
-                    return RedirectToAction("Index", "Account");
+                    FormsAuthentication.SetAuthCookie(viewModel.Login, false);
                 }
                 else
                 {
@@ -128,7 +141,7 @@ namespace ForumWebApplication.Controllers
                     Avatar = viewModel.Avatar,
                     Roles = roles
                 };
-                return View(regModel);
+                return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -142,8 +155,32 @@ namespace ForumWebApplication.Controllers
             string name = User.Identity.Name;
             Bll.Interface.Entities.User user = _userService.GetByLogin(name);
             UserViewModel viewUser = _mapper.GetEntityOne(user);
+            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
+            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             return View(viewUser);
         }
+
+        [HttpPost]
+        public ActionResult Info(HttpPostedFileBase imgFile)
+        {
+            string strId = Request.Params["Id"];
+            long userId = long.Parse(strId);
+            User user = _userService.GetById(userId);
+            user.Name = Request.Params["Name"];
+            user.Mail = Request.Params["Mail"];
+            if (imgFile != null)
+            {
+                string fileName = user.Id.ToString() + imgFile.FileName.Substring(imgFile.FileName.LastIndexOf('.'));
+                imgFile.SaveAs(Server.MapPath(WebConfigurationManager.AppSettings["Avatars"]) + fileName);
+                user.Avatar = fileName;
+            }
+            _userService.Edit(user);
+            UserViewModel viewUser = _mapper.GetEntityOne(user);
+            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
+            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
+            return View(viewUser);
+        }
+
 
         private bool ValidateUser(string login, string password)
         {

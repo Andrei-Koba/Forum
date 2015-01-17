@@ -28,7 +28,7 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
                 Name = dalEntity.Name,
                 CreationDate = dalEntity.CreationDate,
                 Creator = dalEntity.Creator,
-                PostsCount = topicPosts.Count
+                PostsCount = dalEntity.PostCount
             };
         }
 
@@ -39,7 +39,8 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
                 Id = bllEntity.Id,
                 Name = bllEntity.Name,
                 Creator = bllEntity.Creator,
-                CreationDate = bllEntity.CreationDate
+                CreationDate = bllEntity.CreationDate,
+                PostCount = bllEntity.PostsCount
             };
         }
 

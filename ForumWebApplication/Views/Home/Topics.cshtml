@@ -1,36 +1,35 @@
 ﻿@model IEnumerable<ForumWebApplication.Models.TopicViewModel>
 
 @{
-    ViewBag.Title = "Topics";
+    ViewBag.Title = "Все темы ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Topics</h2>
+<h2>Темы</h2>
 
 <p>
     @if (Request.IsAuthenticated)
     { 
-          @Html.ActionLink("Create New", "Create")
-          @User.Identity.Name
+          @Html.ActionLink("Создать тему", "CreateTopic")
     }
 </p>
 
 
 <div class="row">
-    <div class="col-md-7">
+    <div class="col-md-8">
         @foreach (var item in Model)
         {
             <div class="col-md-12">
-                <div class="col-md-3">
+                <div class="col-md-10">
+                    <h3><a href="/Home/TopicPosts/@item.Id">@item.Name </a></h3>
+                    <br />
+                    <b>Автор: </b>@item.Creator.Name <b>Дата создания: </b>@item.CreationDate
                 </div>
-                <div class="col-md-6">
-                    <h2>@item.Name</h2>
+                <div class="col-md-2">
+                    <h3>@item.PostsCount</h3>
+                    <br />
+                    постов
                 </div>
-                <div class="col-md-3">
-                    <h4><b>Постов: </b>
-                        <br>@item.PostsCount</h4>
-                </div>
-                <hr style="color: black">
             </div>
         }
     </div>

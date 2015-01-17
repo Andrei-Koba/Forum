@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ForumWebApplication.Models.TopicViewModel>
+
+@{
+    ViewBag.Title = "Выши темы";
+}
+
+<h2>Список тем:</h2>
+
+<p>
+    @if (Request.IsAuthenticated)
+    { 
+          @Html.ActionLink("Создать тему", "CreateTopic")
+    }
+</p>
+<div class="row">
+    <div class="col-md-8">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-12">
+                <div class="col-md-10">
+                    <h3><a href="/Home/TopicPosts/@item.Id">@item.Name </a></h3>
+                    <br />
+                    <b>Автор: </b>@item.Creator.Name <b>Дата создания: </b>@item.CreationDate
+                </div>
+                <div class="col-md-2">
+                    <h3>@item.PostsCount</h3>
+                    <br />
+                    постов
+                </div>
+            </div>
+        }
+    </div>
+    </div>

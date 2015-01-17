@@ -1,0 +1,82 @@
+﻿@using ForumWebApplication.Helpers
+@model ForumWebApplication.Models.TopicPostsModel
+
+@{
+    ViewBag.Title = @Model.TopicName;
+}
+
+<script type="text/javascript" 
+            src="@Url.Content("~/scripts/AjaxPost.js")">
+</script>
+
+
+<h2>@Model.TopicName</h2>
+<br />
+<b>Создана: </b>
+@Model.TopicCreator.Name
+<br />
+@Model.CreationDate.ToShortDateString()
+
+<div class="row">
+    <fieldset>
+        @foreach (ForumWebApplication.Models.ViewPost item in Model.List)
+        {
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <h5>@item.Author.Name</h5>
+                    <img src="~/Content/Img/Avatars/@item.Author.Avatar" alt="У данного пользователя нет аватара" height="100" />
+                </div>
+                <div class="col-md-9" style="border-style: inset; margin: 4px; border-color: blue">
+                    <p>Сказал(а):</p>
+                    @if (item.ResponseTo != null)
+                    {
+                        <p>В ответ на: </p>
+                        <div class="col-md-12" style="border-style: inset; border-color: black">
+                            @item.ResponseTo.Message
+                        </div>
+                    }
+                    @if (item.IsBlocked)
+                    { 
+                        <p>Cообщение заблокированно модераторами форума.</p>
+                    }
+                    else
+                    {
+                        <p>@item.Message</p>
+                    }
+                    <div class="col-md-12">
+                        <hr />
+                        <div>
+                        <input type="button" class="likeButton" id="l @item.Id" value="Likes:  @item.Likes" />
+                        <input type="button" class="dislikeButton" id="d @item.Id" value="Dislikes:  @item.Dislikes" /> 
+                        Дата последнего редактирования: @item.LastEdit.ToShortDateString()@item.LastEdit.ToShortTimeString()
+                        </div>
+                        <div class="@Model.Id" id="@item.Id">
+                        @if (Request.IsAuthenticated)
+                        {
+                                <input type="button" class="responseButton"  value="Ответить" />
+                        }
+                        </div>
+                        @if (ViewBag.Admin || ViewBag.Moder)
+                        { 
+                            <form method="post" action="@Url.Action("Block","Post", new {topicId = Model.Id, postId = item.Id })">
+                                <input type="submit" value="Заблокировать" />
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        @Html.PageLinks(Model.PageNo, Model.CountPage, b => Url.Action("TopicPosts", new { Id = @Model.Id, page = b }))
+    </fieldset>
+    @if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("Create", "Post", FormMethod.Post))
+        {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <textarea name="message" rows="10" cols="50"> </textarea>
+        <input type="submit" class="btn btn-success" value="Написать" />
+        }
+    }
+</div>

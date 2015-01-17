@@ -14,6 +14,8 @@ using Bll.Implementation.EntityMappers;
 using Dal.Interface;
 using Dal.Implementation;
 using Dal.Interface.Entities;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace ForumConsoleApplication
 {
@@ -31,25 +33,17 @@ namespace ForumConsoleApplication
 
         static void Main(string[] args)
         {
-            IUserService userService = _resolver.Get<IUserService>();
-            //IEnumerable<User> users = userService.GetAll();
-            //IRoleService roleService = _resolver.Get<IRoleService>();
-            //List<Role> roles = roleService.GetAll().ToList();
-            IUnitOfWork uow = _resolver.Get<IUnitOfWork>();
-            ITopicService topicService = _resolver.Get<ITopicService>();
-            User user = userService.GetById(1);
-            Topic t1 = new Topic() { Id = 1, CreationDate = DateTime.Now, Creator = user, Name = "Topic1" };
-            Topic t2 = new Topic() { Id = 2, CreationDate = DateTime.Now, Creator = user, Name = "Topic2" };
-            Topic t3 = new Topic() { Id = 3, CreationDate = DateTime.Now, Creator = user, Name = "Topic3" };
-            topicService.Add(t1);
-            topicService.Add(t2);
-            topicService.Add(t3);
-            IEnumerable<Topic> topics = topicService.GetAll();
-            foreach (var item in topics)
-            {
-                Console.WriteLine(item.Name);
-            }
-            uow.Dispose();
+            long id = 1;
+            ITopicService topics = _resolver.Get<ITopicService>();
+            Topic topic = topics.GetById(id);
+            topic.Name = "Name";
+            topics.Edit(topic);
+            //ITopicRepository topics = _resolver.Get<ITopicRepository>();
+            //DalTopic topic = topics.FindById(id);
+            //DalTopic topic2 = new DalTopic() { Id = topic.Id, CreationDate = topic.CreationDate, CreatorId = topic.CreatorId, PostsCount = topic.PostsCount, Name = topic.Name };
+            //topic2.Name = "ChangedName";
+            //topics.Edit(topic2);
+            //topics.Save();
             Console.ReadKey();
         }
     }

@@ -1,7 +1,7 @@
 ﻿@model ForumWebApplication.Models.RegisterViewModel
 
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -62,25 +62,19 @@
                 @Html.EditorFor(model => model.ConfirmPassword)
                 @Html.ValidationMessageFor(model => model.ConfirmPassword)
             </div>
-    
+
             <div class="editor-label">
                 @Html.LabelFor(model => model.AddedDate)
             </div>
             <div class="editor-field">
-                @Html.EditorFor(model => model.AddedDate)
-                @Html.ValidationMessageFor(model => model.AddedDate)
+                @Html.DisplayFor(model => model.AddedDate)
             </div>
     
-            <div class="editor-label">
-                @Html.LabelFor(model => model.AvatarPath)
-            </div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.AvatarPath)
-                @Html.ValidationMessageFor(model => model.AvatarPath)
-            </div>
+            @Html.HiddenFor(model => model.AvatarPath)
+   
     
             <p>
-                <input type="submit" value="Save" />
+                <input type="submit" value="Зарегистрироватся" />
             </p>
         </fieldset>
     }

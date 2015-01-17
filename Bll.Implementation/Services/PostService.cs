@@ -20,11 +20,13 @@ namespace Bll.Implementation.Services
     {
         protected readonly IPostRepository _repository;
         protected readonly IEntityMapper<Post, DalPost> _mapper;
+        protected readonly ITopicService _topics;
 
-        public PostService(IPostRepository repository, IEntityMapper<Post, DalPost> mapper)
+        public PostService(IPostRepository repository, IEntityMapper<Post, DalPost> mapper, ITopicService topics)
         {
             _repository = repository;
             _mapper = mapper;
+            _topics = topics;
 
         }
 
@@ -80,6 +82,8 @@ namespace Bll.Implementation.Services
         public virtual void Add(Post entity)
         {
             _repository.Add(_mapper.GetEntityTwo(entity));
+            entity.Topic.PostCount++;
+            _topics.Edit(entity.Topic);
             _repository.Save();
         }
 
@@ -91,6 +95,8 @@ namespace Bll.Implementation.Services
 
         public virtual void Delete(Post entity)
         {
+            entity.Topic.PostCount--;
+            _topics.Edit(entity.Topic);
             _repository.Delete(_mapper.GetEntityTwo(entity));
             _repository.Save();
         }
@@ -104,6 +110,13 @@ namespace Bll.Implementation.Services
         {
             _repository.Dispose();
             _mapper.Dispose();
+        }
+
+        public IEnumerable<Post> Find(Expression<Func<Post, bool>> predicates)
+        {
+            IEnumerable<DalPost> dals = _repository.Find(x => predicates.Compile().Invoke(_mapper.GetEntityOne(x)));
+            IEnumerable<Post> blls = dals.Select(_mapper.GetEntityOne);
+            return blls;
         }
     }
 }

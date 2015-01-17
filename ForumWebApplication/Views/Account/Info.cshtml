@@ -1,65 +1,58 @@
 ﻿@model ForumWebApplication.Models.UserViewModel
 
 @{
-    Layout = null;
+    ViewBag.Title = Model.Name;
 }
 
-<!DOCTYPE html>
+<h2>Информация о пользователе</h2>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Info</title>
-</head>
-<body>
+@using (Html.BeginForm("Info", "Account", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
     <fieldset>
-        <legend>UserViewModel</legend>
-    
-        <div class="display-label">
-             @Html.DisplayNameFor(model => model.Name)
+        <legend>@Model.Name</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
         </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Name)
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
         </div>
-    
-        <div class="display-label">
-             @Html.DisplayNameFor(model => model.Login)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Login)
         </div>
-        <div class="display-field">
+        <div class="editor-field">
             @Html.DisplayFor(model => model.Login)
         </div>
-    
-        <div class="display-label">
-             @Html.DisplayNameFor(model => model.Mail)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Mail)
         </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Mail)
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Mail)
+            @Html.ValidationMessageFor(model => model.Mail)
         </div>
-    
-        <div class="display-label">
-             @Html.DisplayNameFor(model => model.Avatar)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Avatar)
         </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Avatar)
+        <div>
+            <input type="file" name="imgFile" id="imgFile" />
         </div>
-    
-        <div class="display-label">
-             @Html.DisplayNameFor(model => model.RegistrationDate)
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.RegistrationDate)
-        </div>
-    
-        <div class="display-label">
-             @Html.DisplayNameFor(model => model.Pass)
-        </div>
-        <div class="display-field">
-            @Html.DisplayFor(model => model.Pass)
-        </div>
+
+        <br />
+        <p>
+            <input type="submit" value="Сохранить изменения" />
+        </p>
     </fieldset>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-</body>
-</html>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

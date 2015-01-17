@@ -29,6 +29,7 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
 
             return new UserViewModel()
             {
+                Id = dalEntity.Id,
                 Name = dalEntity.Name,
                 Avatar = dalEntity.Avatar,
                 RegistrationDate = dalEntity.RegistrationDate,
@@ -48,6 +49,7 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
 	        }
             User result = new User()
             {
+                Id = bllEntity.Id,
                 Login = bllEntity.Login,
                 Name = bllEntity.Name,
                 Avatar = bllEntity.Avatar,

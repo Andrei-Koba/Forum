@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Bll.Implementation;
@@ -20,12 +21,14 @@ namespace Bll.Implementation.Services
         protected readonly IUserRepository _repository;
         protected readonly IEntityMapper<User, DalUser> _mapper;
         protected readonly IUserRoleRepository _userRoles;
+        protected readonly IRoleRepository _roles;
 
-        public UserService(IUserRepository repository, IEntityMapper<User, DalUser> mapper, IUserRoleRepository userRoles)
+        public UserService(IUserRepository repository, IEntityMapper<User, DalUser> mapper, IUserRoleRepository userRoles, IRoleRepository roles)
         {
             _repository = repository;
             _mapper = mapper;
             _userRoles = userRoles;
+            _roles = roles;
         }
 
         public virtual IEnumerable<User> GetAll()
@@ -73,17 +76,31 @@ namespace Bll.Implementation.Services
         {
             _repository.Add(_mapper.GetEntityTwo(entity));
             _repository.Save();
+            DalUser user = _repository.Find(x => x.Login == entity.Login).FirstOrDefault();
+            DalUserRole userRole = new DalUserRole()
+            {
+                RoleId = _roles.Find(x => x.Name == "user").FirstOrDefault().Id,
+                UserId = user.Id
+            };
+            _userRoles.Add(userRole);
+            _repository.Save();
         }
 
         public virtual void Edit(User entity)
         {
-            _repository.Edit(_mapper.GetEntityTwo(entity));
+            DalUser dal = _mapper.GetEntityTwo(entity);
+            _repository.Edit(dal);
             _repository.Save();
         }
 
         public virtual void Delete(User entity)
         {
             _repository.Delete(_mapper.GetEntityTwo(entity));
+            IEnumerable<DalUserRole> userRoles = _userRoles.Find(x => x.UserId == entity.Id);
+            foreach (var item in userRoles)
+            {
+                _userRoles.Delete(item); 
+            }
             _repository.Save();
         }
 
@@ -106,6 +123,7 @@ namespace Bll.Implementation.Services
             {
                 _userRoles.Delete(item);
             }
+            _userRoles.Save();
             foreach (var item in user.Roles)
             {
                 DalUserRole userRole = new DalUserRole()
@@ -115,6 +133,14 @@ namespace Bll.Implementation.Services
                 };
                 _userRoles.Add(userRole);
             }
+            _userRoles.Save();
+        }
+
+        public IEnumerable<User> Find(Expression<Func<User, bool>> predicates)
+        {
+            IEnumerable<DalUser> dals = _repository.Find(x => predicates.Compile().Invoke(_mapper.GetEntityOne(x)));
+            IEnumerable<User> blls = dals.Select(_mapper.GetEntityOne);
+            return blls;
         }
     }
 }

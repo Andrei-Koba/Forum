@@ -30,7 +30,8 @@ namespace Bll.Implementation.EntityMappers
                 Id = dalEntity.Id,
                 Name = dalEntity.Name,
                 CreationDate = dalEntity.CreationDate,
-                Creator = user
+                Creator = user,
+                PostCount = dalEntity.PostsCount
             };
         }
 
@@ -42,7 +43,8 @@ namespace Bll.Implementation.EntityMappers
                 Id = bllEntity.Id,
                 Name = bllEntity.Name,
                 CreatorId = user.Id,
-                CreationDate = bllEntity.CreationDate
+                CreationDate = bllEntity.CreationDate,
+                PostsCount = bllEntity.PostCount
             };
         }
 

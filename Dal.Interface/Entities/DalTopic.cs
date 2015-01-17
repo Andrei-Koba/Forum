@@ -13,5 +13,6 @@ namespace Dal.Interface.Entities
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
         public long CreatorId { get; set; }
+        public int PostsCount { get; set; }
     }
 }

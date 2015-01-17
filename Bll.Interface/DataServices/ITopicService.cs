@@ -11,5 +11,6 @@ namespace Bll.Interface.DataServices
     {
         Topic GetByName(string name);
         IEnumerable<Topic> GetByCreator(User creator);
+        IEnumerable<Topic> GetMostPopular(int count);
     }
 }

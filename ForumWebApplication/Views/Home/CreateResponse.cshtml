@@ -1,0 +1,6 @@
+﻿<div>
+    <form method="post" id="ResponseForm" action="@Url.Action("CommitResponse","Post", new {topicId = ViewBag.Topic, postId = ViewBag.Post})">
+        <textarea name="message" rows="10" cols="50"></textarea>
+        <input type="submit" class="btn btn-success" value="Написать" />
+    </form>
+</div>

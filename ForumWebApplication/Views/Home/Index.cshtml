@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Форум";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Главная страница</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <h2>Самые популярные темы</h2>
+            @foreach (var item in ViewBag.Popular)
+            {
+                <div class="col-md-10">
+                    <h3><a href="/Home/TopicPosts/@item.Id">@item.Name </a></h3>
+                    <br />
+                    <b>Автор: </b>@item.Creator.Name <b>Дата создания: </b>@item.CreationDate
+                </div>
+                <div class="col-md-2">
+                    <h3>@item.PostsCount</h3>
+                    <br />
+                    постов
+                </div>
+            }
+        </div>
+
+
+        <div class="col-md-6">
+            <h2>Последние темы</h2>
+            @foreach (var item in ViewBag.Latest)
+            {
+                <div class="col-md-10">
+                    <h3><a href="/Home/TopicPosts/@item.Id">@item.Name </a></h3>
+                    <br />
+                    <b>Автор: </b>@item.Creator.Name <b>Дата создания: </b>@item.CreationDate
+                </div>
+                <div class="col-md-2">
+                    <h3>@item.PostsCount</h3>
+                    <br />
+                    постов
+                </div>
+            }
+        </div>
+    </div>
+</div>

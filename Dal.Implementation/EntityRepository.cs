@@ -48,8 +48,7 @@ namespace Dal.Implementation
 
         public void Edit(T item)
         {
-            DbEntityEntry dbEntityEntry = _entitiesContext.Entry<T>(item);
-            dbEntityEntry.State = EntityState.Modified;
+            _entitiesContext.Entry(item).State = EntityState.Modified;
         }
 
         public void Delete(T item)
@@ -60,7 +59,7 @@ namespace Dal.Implementation
 
         public void Save()
         {
-            _entitiesContext.SaveChanges();
+            _entitiesContext.SaveChanges();  
         }
 
         public void Dispose()

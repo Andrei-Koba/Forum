@@ -15,6 +15,7 @@ namespace Bll.Interface
         void Add(TEntity entity);
         void Edit(TEntity entity);
         void Delete(TEntity entity);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicates);
         void Save();
         void Dispose();
     }

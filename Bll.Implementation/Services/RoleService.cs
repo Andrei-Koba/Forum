@@ -21,11 +21,13 @@ namespace Bll.Implementation.Services
 
         protected readonly IRoleRepository _repository;
         protected readonly IEntityMapper<Role, DalRole> _mapper;
+        protected readonly IUserRoleRepository _userRoles;
 
-        public RoleService(IRoleRepository repository, IEntityMapper<Role, DalRole> mapper)
+        public RoleService(IRoleRepository repository, IEntityMapper<Role, DalRole> mapper, IUserRoleRepository userRoles)
         {
             _repository = repository;
             _mapper = mapper;
+            _userRoles = userRoles;
         }
 
         public virtual IEnumerable<Role> GetAll()
@@ -62,6 +64,11 @@ namespace Bll.Implementation.Services
         public virtual void Delete(Role entity)
         {
             _repository.Delete(_mapper.GetEntityTwo(entity));
+            IEnumerable<DalUserRole> userRoles = _userRoles.Find(x => x.RoleId == entity.Id);
+            foreach (var item in userRoles)
+            {
+                _userRoles.Delete(item);
+            }
             _repository.Save();
         }
 
@@ -74,6 +81,14 @@ namespace Bll.Implementation.Services
         {
             _repository.Dispose();
             _mapper.Dispose();
+        }
+
+
+        public IEnumerable<Role> Find(Expression<Func<Role, bool>> predicates)
+        {
+            IEnumerable<DalRole> dals = _repository.Find(x => predicates.Compile().Invoke(_mapper.GetEntityOne(x)));
+            IEnumerable<Role> blls = dals.Select(_mapper.GetEntityOne);
+            return blls;
         }
     }
 }
