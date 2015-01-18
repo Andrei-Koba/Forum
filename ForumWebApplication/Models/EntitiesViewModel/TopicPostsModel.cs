@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Bll.Interface.Entities;
 using Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForumWebApplication.Models
 {

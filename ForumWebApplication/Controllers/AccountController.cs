@@ -178,6 +178,7 @@ namespace ForumWebApplication.Controllers
             UserViewModel viewUser = _mapper.GetEntityOne(user);
             ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
             ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
+            System.Threading.Thread.Sleep(500); // Чтобы сетвер успел загрузить  картинку
             return View(viewUser);
         }
 

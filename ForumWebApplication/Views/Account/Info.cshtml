@@ -42,6 +42,11 @@
         <div class="editor-label">
             @Html.LabelFor(model => model.Avatar)
         </div>
+
+        <div class="editor-label">
+            <img src="~/Content/Img/Avatars/@Model.Avatar" alt="У данного пользователя нет аватара" height="100" />
+        </div>
+
         <div>
             <input type="file" name="imgFile" id="imgFile" />
         </div>

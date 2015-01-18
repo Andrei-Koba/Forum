@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Bll.Interface.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace ForumWebApplication.Models
 {
