@@ -19,14 +19,12 @@ namespace ForumWebApplication.Controllers
         private ITopicService _topics;
         private IPostService _posts;
         private IUserService _users;
-        private CustomRoleProvider _rp;
 
         public PostController(ITopicService topics, IPostService posts, IUserService users)
         {
             _topics = topics;
             _posts = posts;
             _users = users;
-            _rp = new CustomRoleProvider();
         }
 
         [Authorize]
@@ -47,21 +45,17 @@ namespace ForumWebApplication.Controllers
             post.Message = Request.Params["message"];
             post.ResponseTo = 0;
             _posts.Add(post);
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             return RedirectToAction("TopicPosts", "Home", topic);
         }
 
-        public ActionResult Block(long topicId, long postId)
+        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public void Block(string strPostId)
         {
+            long postId = long.Parse(strPostId);
             Post post = _posts.GetById(postId);
             post.IsBlocked = true;
             _posts.Edit(post);
-            Topic topic = _topics.GetById(topicId);
-
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
-            return RedirectToAction("TopicPosts", "Home", topic);
         }
 
         [HttpPost]
@@ -97,8 +91,6 @@ namespace ForumWebApplication.Controllers
             Topic topic = _topics.GetById(topicId);
             post.Topic = topic;
             _posts.Add(post);
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             return RedirectToAction("TopicPosts", "Home", topic);
         }
 

@@ -19,7 +19,7 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
             _roles = roles;
         }
 
-        public UserViewModel GetEntityOne(User dalEntity)
+        public UserViewModel GetBll(User dalEntity)
         {
             List<string> roles = new List<string>();
             foreach (var item in dalEntity.Roles)
@@ -40,7 +40,7 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
             };
         }
 
-        public User GetEntityTwo(UserViewModel bllEntity)
+        public User GetDal(UserViewModel bllEntity)
         {
             List<Role> roles = new List<Role>();
             foreach (var item in bllEntity.Roles)
@@ -59,11 +59,6 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
                 Pass = bllEntity.Pass
             };
             return result;
-        }
-
-        public void Dispose()
-        {
-            _roles.Dispose();
         }
     }
 }

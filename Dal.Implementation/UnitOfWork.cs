@@ -10,21 +10,32 @@ namespace Dal.Implementation
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private DbContext _context;
+
         public UnitOfWork(DbContext context)
         {
             _context = context;
         }
 
-        private readonly DbContext _context;
-
         public void Commit()
         {
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                _context.Dispose();
+                throw new Exception("Db context is unavalable", e);
+            }
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            _context.Dispose();
+            if (_context != null)
+            {
+                _context.Dispose();
+            }
         }
     }
 }

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Andrew\ASP.NET_training\temp\Prob2\bin\Debug\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,12 +48,10 @@
     <Compile Include="DataAccess\IRoleRepository.cs" />
     <Compile Include="DataAccess\ITopicRepository.cs" />
     <Compile Include="DataAccess\IUserRepository.cs" />
-    <Compile Include="DataAccess\IUserRoleRepository.cs" />
     <Compile Include="Entities\DalRole.cs" />
     <Compile Include="Entities\DalTopic.cs" />
     <Compile Include="Entities\DalUser.cs" />
     <Compile Include="Entities\DalPost.cs" />
-    <Compile Include="Entities\DalUSerRole.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -42,4 +42,20 @@
             });
         return false;
     });
+
+    $('.BlockButton').click(function () {
+        var postId = $(this).attr('name');
+        $.ajax(
+            {
+                url: '/Post/Block',
+                settings: { type: 'POST' },
+                type: 'POST',
+                data: { 'strPostId': postId, }
+            });
+        var divClass = '.' + postId;
+        $(divClass).empty();
+        $(divClass).append("Сообщение заблокированно модераторами форума.");
+        return false;
+    });
+
 });

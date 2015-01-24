@@ -24,23 +24,22 @@ namespace DependencyResolver
         public static void Configure(this IKernel kernel)
         {
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
-            kernel.Bind<DbContext>().To<EntitiesContext>().InRequestScope();
+            kernel.Bind<DbContext>().To<EntitiesContext>().InSingletonScope();
 
-            kernel.Bind<IRoleService>().To<RoleService>();
-            kernel.Bind<IUserService>().To<UserService>();
-            kernel.Bind<ITopicService>().To<TopicService>();
-            kernel.Bind<IPostService>().To<PostService>();
+            kernel.Bind<IUserRepository>().To<UserRepository>();
+            kernel.Bind<IRoleRepository>().To<RoleRepository>();
+            kernel.Bind<ITopicRepository>().To<TopicRepository>();
+            kernel.Bind<IPostRepository>().To<PostRepository>();
 
             kernel.Bind<IEntityMapper<User, DalUser>>().To<UserMapper>();
             kernel.Bind<IEntityMapper<Role, DalRole>>().To<RoleMapper>();
             kernel.Bind<IEntityMapper<Topic, DalTopic>>().To<TopicMapper>();
             kernel.Bind<IEntityMapper<Post, DalPost>>().To<PostMapper>();
 
-            kernel.Bind<IUserRepository>().To<UserRepository>();
-            kernel.Bind<IRoleRepository>().To<RoleRepository>();
-            kernel.Bind<ITopicRepository>().To<TopicRepository>();
-            kernel.Bind<IPostRepository>().To<PostRepository>();
-            kernel.Bind<IUserRoleRepository>().To<UserRoleRepository>();
+            kernel.Bind<IRoleService>().To<RoleService>();
+            kernel.Bind<IUserService>().To<UserService>();
+            kernel.Bind<ITopicService>().To<TopicService>();
+            kernel.Bind<IPostService>().To<PostService>();
 
         }
     }

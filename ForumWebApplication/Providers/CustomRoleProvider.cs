@@ -14,46 +14,52 @@ namespace ForumWebApplication.Providers
     public class CustomRoleProvider: RoleProvider
     {
 
+        private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
+
+        public CustomRoleProvider()
+        {
+            _userService = NinjectWebCommon.GetKernel().Get<IUserService>();
+            _roleService = NinjectWebCommon.GetKernel().Get<IRoleService>();
+        }
+
         public override bool IsUserInRole(string username, string roleName)
         {
-            IKernel kernel = NinjectWebCommon.CreateKernel();
-            using (IUserService userService = kernel.Get<IUserService>())
+            try
             {
-                User user = userService.GetByLogin(username);
-
-                if (user == null) return false;
-
+                User user = _userService.GetByLogin(username);
                 foreach (var item in user.Roles)
                 {
                     if (item.Name == roleName) return true;
                 }
+            }
+            catch (Exception e)
+            {
                 return false;
             }
+            return false;
         }
 
         public override string[] GetRolesForUser(string login)
         {
-            IKernel kernel = NinjectWebCommon.CreateKernel();
-            using (IUserService userService = kernel.Get<IUserService>())
-            {
-                User user = userService.GetByLogin(login);
+                User user = _userService.GetByLogin(login);
                 List<string> roles = new List<string>();
                 foreach (var item in user.Roles)
             	{
                     roles.Add(item.Name);
 	            }
                 return roles.ToArray();
-            }
         }
 
         public override void CreateRole(string roleName)
         {
-            Role newRole = new Role() {Name = roleName };
-            IKernel kernel = NinjectWebCommon.CreateKernel();
-            using (IRoleService roleService = kernel.Get<IRoleService>())
+            Role existRole = _roleService.GetByName(roleName);
+            if (existRole != null)
             {
-                roleService.Add(newRole);
+                throw new ArgumentException("Role with that name already exist.");
             }
+            Role newRole = new Role() {Name = roleName };
+            _roleService.Add(newRole);
         }
 
 

@@ -20,7 +20,7 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
             _posts = posts;
         }
 
-        public ViewPost GetEntityOne(Post dalEntity)
+        public ViewPost GetBll(Post dalEntity)
         {
             Post response = null;
             if (dalEntity.ResponseTo != 0)
@@ -41,7 +41,7 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
             };
         }
 
-        public Post GetEntityTwo(ViewPost bllEntity)
+        public Post GetDal(ViewPost bllEntity)
         {
             long resp = 0;
             if (bllEntity.ResponseTo != null)
@@ -62,9 +62,6 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
             };
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }

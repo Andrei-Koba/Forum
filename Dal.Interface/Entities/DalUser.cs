@@ -10,6 +10,7 @@ namespace Dal.Interface.Entities
     public class DalUser : IEntity
     {
         public long Id { get; set; }
+        public virtual ICollection<DalRole> Roles { get; set; }
         public string Name { get; set; }
         public string Login { get; set; }
         public string Mail { get; set; }

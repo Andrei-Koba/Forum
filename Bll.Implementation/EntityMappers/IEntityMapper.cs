@@ -7,12 +7,11 @@ using Interfaces;
 
 namespace Bll.Implementation.EntityMappers
 {
-    public interface IEntityMapper<TEntityOne, TEntityTwo> : IDisposable
-        where TEntityOne : IEntity
-        where TEntityTwo : IEntity
+    public interface IEntityMapper<TBll, TDal>
+        where TBll : IEntity
+        where TDal : IEntity
     {
-        TEntityOne GetEntityOne(TEntityTwo dalEntity);
-        TEntityTwo GetEntityTwo(TEntityOne bllEntity);
-        void Dispose();
+        TBll GetBll(TDal dalEntity);
+        TDal GetDal(TBll bllEntity);
     }
 }

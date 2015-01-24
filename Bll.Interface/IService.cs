@@ -8,15 +8,13 @@ using System.Linq.Expressions;
 
 namespace Bll.Interface
 {
-    public interface IService<TEntity>: IDisposable where TEntity : class, IEntity
+    public interface IService<TEntity> where TEntity : class, IEntity
     {
         IEnumerable<TEntity> GetAll();
         TEntity GetById(long id);
         void Add(TEntity entity);
         void Edit(TEntity entity);
         void Delete(TEntity entity);
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicates);
         void Save();
-        void Dispose();
     }
 }

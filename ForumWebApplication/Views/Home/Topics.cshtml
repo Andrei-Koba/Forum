@@ -10,10 +10,11 @@
 <p>
     @if (Request.IsAuthenticated)
     { 
-          @Html.ActionLink("Создать тему", "CreateTopic")
+        <input type="button" name="NewTopic" class="btn btn-default" value="Создать новую тему" />
     }
 </p>
 
+<div id="ForNewTopic"></div>
 
 <div class="row">
     <div class="col-md-8">

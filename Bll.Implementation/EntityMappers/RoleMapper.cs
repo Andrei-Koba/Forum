@@ -10,18 +10,15 @@ namespace Bll.Implementation.EntityMappers
 {
     public class RoleMapper: IEntityMapper<Role,DalRole>
     {
-        public Role GetEntityOne(DalRole dalEntity)
+        public Role GetBll(DalRole dalEntity)
         {
             return new Role() { Id = dalEntity.Id, Name = dalEntity.Name };
         }
 
-        public DalRole GetEntityTwo(Role bllEntity)
+        public DalRole GetDal(Role bllEntity)
         {
             return new DalRole() { Id = bllEntity.Id, Name = bllEntity.Name };
         }
 
-
-        public void Dispose()
-        {}
     }
 }

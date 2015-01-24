@@ -9,67 +9,46 @@ using Dal.Interface.DataAccess;
 
 namespace Bll.Implementation.EntityMappers
 {
-    public class UserMapper: IEntityMapper<User,DalUser>
+    public class UserMapper : IEntityMapper<User, DalUser>
     {
 
-        protected IRoleRepository _roles;
-        protected IUserRoleRepository _userRoles;
-        protected IEntityMapper<Role, DalRole> _roleMapper;
+        private IEntityMapper<Role, DalRole> _roleMapper;
 
-        public UserMapper(IRoleRepository roleRepository, IUserRoleRepository userRoleRepository, IEntityMapper<Role,DalRole> roleMapper)
+        public UserMapper()
         {
-            _roles = roleRepository;
-            _userRoles = userRoleRepository;
-            _roleMapper = roleMapper;
-
+            _roleMapper = new RoleMapper();
         }
 
-        public User GetEntityOne(DalUser dalEntity)
+        public User GetBll(DalUser dalEntity)
         {
-            List<DalUserRole> userRoles = _userRoles.Find(x => x.UserId == dalEntity.Id).ToList();
-            List<DalRole> dalRoles = new List<DalRole>();
-            foreach (var item in userRoles)
-	        {
-		        dalRoles.Add(_roles.FindById(item.RoleId));
-	        }
-            List<Role> roles = new List<Role>();
-            foreach (var item in dalRoles)
+            User bll = new User();
+            bll.Id = dalEntity.Id;
+            bll.Login = dalEntity.Login;
+            bll.Mail = dalEntity.Mail;
+            bll.Pass = dalEntity.Pass;
+            bll.RegistrationDate = dalEntity.RegistrationDate;
+            bll.Name = dalEntity.Name;
+            bll.Avatar = dalEntity.Avatar;
+            if (dalEntity.Roles != null)
             {
-                roles.Add(_roleMapper.GetEntityOne(item));
+                bll.Roles = dalEntity.Roles.Select(_roleMapper.GetBll);
             }
+            return bll;
 
-            return new User()
-            {
-                Id = dalEntity.Id,
-                Avatar = dalEntity.Avatar,
-                Login = dalEntity.Login,
-                Name = dalEntity.Name,
-                Mail = dalEntity.Mail,
-                Roles = roles,
-                RegistrationDate = dalEntity.RegistrationDate,
-                Pass = dalEntity.Pass
-            };
         }
 
-        public DalUser GetEntityTwo(User bllEntity)
+        public DalUser GetDal(User bllEntity)
         {
-            return new DalUser()
-            {
-                Id = bllEntity.Id,
-                Name = bllEntity.Name,
-                Avatar = bllEntity.Avatar,
-                Pass = bllEntity.Pass,
-                Mail = bllEntity.Mail,
-                RegistrationDate = bllEntity.RegistrationDate,
-                Login = bllEntity.Login
-            };
-        }
-
-        public void Dispose()
-        {
-            _roleMapper.Dispose();
-            _userRoles.Dispose();
-            _roles.Dispose();
+            
+            DalUser dal = new DalUser();
+            dal.Avatar = bllEntity.Avatar;
+            dal.Id = bllEntity.Id;
+            dal.Login = bllEntity.Login;
+            dal.Mail = bllEntity.Mail;
+            dal.Name = bllEntity.Name;
+            dal.Pass = bllEntity.Pass;
+            dal.RegistrationDate = bllEntity.RegistrationDate;
+            return dal;
         }
     }
 }

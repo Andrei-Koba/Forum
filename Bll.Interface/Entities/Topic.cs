@@ -13,6 +13,5 @@ namespace Bll.Interface.Entities
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
         public User Creator { get; set; }
-        public int PostCount { get; set; }
     }
 }

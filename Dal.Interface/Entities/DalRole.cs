@@ -11,5 +11,6 @@ namespace Dal.Interface.Entities
     {
         public long Id { get; set; }
         public string Name { get; set; }
+        public virtual ICollection<DalUser> Users { get; set; }
     }
 }

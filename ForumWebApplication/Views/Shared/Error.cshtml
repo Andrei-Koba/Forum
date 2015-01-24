@@ -6,12 +6,17 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
+    <link href="@Url.Content("~/Content/Bootstrap/bootstrap.css")" rel="stylesheet" type="text/css" >
+    <script src="@Url.Content("~/Content/Bootsrtap/bootstrap.min.js")" type="text/javascript" ></script>
+    @Scripts.Render("~/bundles/jquery")
+    <meta charset="utf-8" />
+    <title>Что-то пошло не так</title>
 </head>
 <body>
     <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
+        <h1 align="center">Ошибка в работе сайта</h1>
+        <h2>В результате обработки вашего запроса возникла непредвиденная ошибка.
+             Невозможно обработать запрос в данное время. Перейдите пожалуйста на <a href="/Home/Index">главную страницу</a>.</h2>
     </hgroup>
 </body>
 </html>

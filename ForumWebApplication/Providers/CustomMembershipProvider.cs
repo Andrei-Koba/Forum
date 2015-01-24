@@ -17,60 +17,47 @@ namespace ForumWebApplication.Providers
     public class CustomMembershipProvider : MembershipProvider
     {
 
+        private readonly IUserService _userService;
+
+        public CustomMembershipProvider()
+        {
+            _userService = NinjectWebCommon.GetKernel().Get<IUserService>();
+        }
+
         public MembershipUser CreateUser(UserViewModel viewUser)
         {
             MembershipUser membershipUser = GetUser(viewUser.Login, false);
-
             if (membershipUser != null)
             {
                 return null;
             }
-            IKernel kernel = NinjectWebCommon.CreateKernel();
-            using (IUserService userService = kernel.Get<IUserService>())
+            var user = new User
             {
-                using (IRoleService roleService = kernel.Get<IRoleService>())
-                {
-                    var user = new User
-                    {
-                        Mail = viewUser.Mail,
-                        Name = viewUser.Name,
-                        Login = viewUser.Login,
-                        Pass = Crypto.HashPassword(viewUser.Pass),
-                        Avatar = viewUser.Avatar,
-                        RegistrationDate = viewUser.RegistrationDate,
-                        Roles = new List<Role>()
-                        //http://msdn.microsoft.com/ru-ru/library/system.web.helpers.crypto(v=vs.111).aspx
-                    };
-
-                    Role role = roleService.GetByName("user");
-                    if (role != null)
-                    {
-                        user.Roles.Add(role);
-                    }
-                    userService.Add(user);
-                    userService.SetUserRoles(user);
-                }
-            }
+                Mail = viewUser.Mail,
+                Name = viewUser.Name,
+                Login = viewUser.Login,
+                Pass = Crypto.HashPassword(viewUser.Pass),
+                Avatar = viewUser.Avatar,
+                RegistrationDate = viewUser.RegistrationDate,
+                Roles = new List<Role>()
+            };
+            _userService.Add(user);
+            string[] role = new string[1];
+            role[0] = "user";
+            User newUser = _userService.GetByLogin(user.Login);
+            _userService.SetUserRoles(newUser.Id, role);
             membershipUser = GetUser(viewUser.Login, false);
             return membershipUser;
-
-
         }
 
         public override MembershipUser GetUser(string login, bool userIsOnline)
         {
-            IKernel kernel = NinjectWebCommon.CreateKernel();
-            using (IUserService userService = kernel.Get<IUserService>())
-            {
-                var user = userService.GetByLogin(login);
-
-                if (user == null) return null;
-                var memberUser = new MembershipUser("CustomMembershipProvider", user.Login, user.Mail,
-                    null, null, null,
-                    false, false, user.RegistrationDate, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
-
-                return memberUser;
-            }
+            User user = _userService.GetByLogin(login);
+            if (user == null) return null;
+            var memberUser = new MembershipUser("CustomMembershipProvider", user.Login, user.Mail,
+                null, null, null,
+                false, false, user.RegistrationDate, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue, DateTime.MinValue);
+            return memberUser;
         }
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)

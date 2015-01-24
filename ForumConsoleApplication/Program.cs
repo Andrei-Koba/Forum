@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bll.Implementation.Services;
+//using Bll.Implementation.Services;
 using Bll.Interface.Entities;
 using Bll.Interface.DataServices;
 using Ninject;
@@ -33,18 +33,15 @@ namespace ForumConsoleApplication
 
         static void Main(string[] args)
         {
-            long id = 1;
-            ITopicService topics = _resolver.Get<ITopicService>();
-            Topic topic = topics.GetById(id);
-            topic.Name = "Name";
-            topics.Edit(topic);
-            //ITopicRepository topics = _resolver.Get<ITopicRepository>();
-            //DalTopic topic = topics.FindById(id);
-            //DalTopic topic2 = new DalTopic() { Id = topic.Id, CreationDate = topic.CreationDate, CreatorId = topic.CreatorId, PostsCount = topic.PostsCount, Name = topic.Name };
-            //topic2.Name = "ChangedName";
-            //topics.Edit(topic2);
-            //topics.Save();
-            Console.ReadKey();
-        }
+            IRoleService _roles = _resolver.Get<IRoleService>();
+            IUserService _users = _resolver.Get<IUserService>();
+            ITopicService _topics = _resolver.Get<ITopicService>();
+            IPostService _posts = _resolver.Get<IPostService>();
+            User user = _users.GetById(2);
+            Topic topic = new Topic() { CreationDate = DateTime.Now, Name = "NewTopic", Creator = user};
+            _topics.Add(topic);
+            Console.WriteLine("end");
+        
+      }
     }
 }

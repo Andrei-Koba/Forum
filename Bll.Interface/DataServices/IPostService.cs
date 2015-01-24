@@ -9,11 +9,8 @@ namespace Bll.Interface.DataServices
 {
     public interface IPostService: IService<Post>
     {
-        IEnumerable<Post> GetByAuthor(User author);
-        IEnumerable<Post> GetByTopic(Topic topic);
-        IEnumerable<Post> GetBlocked();
-        IEnumerable<Post> GetNotBlocked();
-        IEnumerable<Post> GetAllResponse(Post post);
+        IEnumerable<Post> GetByAuthor(long authorId);
+        IEnumerable<Post> GetByTopic(long topicId);
 
     }
 }

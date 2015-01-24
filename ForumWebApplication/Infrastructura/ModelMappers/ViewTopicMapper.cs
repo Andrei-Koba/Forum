@@ -19,20 +19,20 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
             _posts = posts;
         }
 
-        public TopicViewModel GetEntityOne(Topic dalEntity)
+        public TopicViewModel GetBll(Topic dalEntity)
         {
-            List<Post> topicPosts = _posts.GetByTopic(dalEntity).ToList();
+            List<Post> topicPosts = _posts.GetByTopic(dalEntity.Id).ToList();
             return new TopicViewModel() 
             {
                 Id = dalEntity.Id,
                 Name = dalEntity.Name,
                 CreationDate = dalEntity.CreationDate,
                 Creator = dalEntity.Creator,
-                PostsCount = dalEntity.PostCount
+                PostsCount = topicPosts.Count
             };
         }
 
-        public Topic GetEntityTwo(TopicViewModel bllEntity)
+        public Topic GetDal(TopicViewModel bllEntity)
         {
             return new Topic()
             {
@@ -40,13 +40,7 @@ namespace ForumWebApplication.Infrastructura.ModelMappers
                 Name = bllEntity.Name,
                 Creator = bllEntity.Creator,
                 CreationDate = bllEntity.CreationDate,
-                PostCount = bllEntity.PostsCount
             };
-        }
-
-        public void Dispose()
-        {
-            _posts.Dispose();
         }
     }
 }

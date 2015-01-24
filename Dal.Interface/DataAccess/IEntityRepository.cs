@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 namespace Dal.Interface.DataAccess
 {
 
-    public interface IEntityRepository<T>:IDisposable where T: class, IEntity
+    public interface IEntityRepository<T> where T: class, IEntity
     {
         IEnumerable<T> GetAll();
         IEnumerable<T> Find(params Expression<Func<T, bool>>[] predicates);
@@ -18,7 +18,6 @@ namespace Dal.Interface.DataAccess
         void Edit(T item);
         void Delete(T item);
         void Save();
-        void Dispose();
 
     }
 }

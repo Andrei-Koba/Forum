@@ -13,7 +13,7 @@ namespace Bll.Interface.Entities
         public string Name { get; set; }
         public string Login { get; set; }
         public string Mail { get; set; }
-        public List<Role> Roles { get; set; }
+        public IEnumerable<Role> Roles { get; set; }
         public string Avatar { get; set; }
         public DateTime RegistrationDate { get; set; }
         public string Pass { get; set; }

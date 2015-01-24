@@ -36,7 +36,7 @@ namespace ForumWebApplication.App_Start
         /// Creates the kernel that will manage your application.
         /// </summary>
         /// <returns>The created kernel.</returns>
-        public static IKernel CreateKernel()
+        private static IKernel CreateKernel()
         {
             var kernel = new StandardKernel();
             try
@@ -61,6 +61,11 @@ namespace ForumWebApplication.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Configure();
-        }        
+        }
+
+        public static IKernel GetKernel()
+        {
+            return bootstrapper.Kernel;
+        }
     }
 }

@@ -20,20 +20,16 @@ namespace ForumWebApplication.Controllers
         private readonly IUserService _userService;
         private ViewUserMapper _mapper;
         private IRoleService _roles;
-        private CustomRoleProvider _rp;
 
         public AccountController(IUserService userService, IRoleService roles)
         {
             _userService = userService;
             _roles = roles;
             _mapper = new ViewUserMapper(_roles);
-            _rp = new CustomRoleProvider();
         }
 
         public ActionResult Login()
         {
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             return View();
 
         }
@@ -41,8 +37,6 @@ namespace ForumWebApplication.Controllers
         [HttpPost]
         public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             if (ModelState.IsValid)
             {
                 if (ValidateUser(model.UserName, model.Password))
@@ -77,8 +71,6 @@ namespace ForumWebApplication.Controllers
         {
             RegisterViewModel reg = new RegisterViewModel();
             reg.AddedDate = DateTime.Now;
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             return View(reg);
         }
 
@@ -90,8 +82,6 @@ namespace ForumWebApplication.Controllers
             //    ModelState.AddModelError("Captcha", "Текст с картинки введен неверно");
             //    return View(viewModel);
             //}
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             var anyUser = _userService.GetAll().Any(u => u.Mail.Contains(regModel.Email));
             if (anyUser)
             {
@@ -154,9 +144,7 @@ namespace ForumWebApplication.Controllers
         {
             string name = User.Identity.Name;
             Bll.Interface.Entities.User user = _userService.GetByLogin(name);
-            UserViewModel viewUser = _mapper.GetEntityOne(user);
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
+            UserViewModel viewUser = _mapper.GetBll(user);
             return View(viewUser);
         }
 
@@ -175,9 +163,7 @@ namespace ForumWebApplication.Controllers
                 user.Avatar = fileName;
             }
             _userService.Edit(user);
-            UserViewModel viewUser = _mapper.GetEntityOne(user);
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
+            UserViewModel viewUser = _mapper.GetBll(user);
             System.Threading.Thread.Sleep(500); // Чтобы сетвер успел загрузить  картинку
             return View(viewUser);
         }

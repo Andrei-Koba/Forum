@@ -9,49 +9,34 @@ using Dal.Interface.DataAccess;
 
 namespace Bll.Implementation.EntityMappers
 {
-    public class TopicMapper: IEntityMapper<Topic,DalTopic>
+    public class TopicMapper : IEntityMapper<Topic, DalTopic>
     {
 
-        protected IEntityRepository<DalUser> _users;
-        protected IEntityMapper<User, DalUser> _userMapper;
+        private readonly IEntityMapper<User, DalUser> _userMapper;
 
-        public TopicMapper(IUserRepository userRepository, IEntityMapper<User,DalUser> userMapper)
+        public TopicMapper()
         {
-            _users = userRepository;
-            _userMapper = userMapper;
+            _userMapper = new UserMapper();
         }
 
-        public Topic GetEntityOne(DalTopic dalEntity)
+        public Topic GetBll(DalTopic dalEntity)
         {
-            DalUser dalUser = _users.FindById(dalEntity.CreatorId);
-            User user = _userMapper.GetEntityOne(dalUser);
-            return new Topic()
-            {
-                Id = dalEntity.Id,
-                Name = dalEntity.Name,
-                CreationDate = dalEntity.CreationDate,
-                Creator = user,
-                PostCount = dalEntity.PostsCount
-            };
+            Topic bll = new Topic();
+            bll.CreationDate = dalEntity.CreationDate;
+            bll.Creator = _userMapper.GetBll(dalEntity.User);
+            bll.Id = dalEntity.Id;
+            bll.Name = dalEntity.Name;
+            return bll;
         }
 
-        public DalTopic GetEntityTwo(Topic bllEntity)
+        public DalTopic GetDal(Topic bllEntity)
         {
-            DalUser user = _users.FindById(bllEntity.Creator.Id);
-            return new DalTopic()
-            {
-                Id = bllEntity.Id,
-                Name = bllEntity.Name,
-                CreatorId = user.Id,
-                CreationDate = bllEntity.CreationDate,
-                PostsCount = bllEntity.PostCount
-            };
-        }
-
-        public void Dispose()
-        {
-            _users.Dispose();
-            _userMapper.Dispose();
+            DalTopic dal = new DalTopic();
+            dal.CreationDate = bllEntity.CreationDate;
+            dal.UserId = bllEntity.Creator.Id;
+            dal.Id = bllEntity.Id;
+            dal.Name = bllEntity.Name;
+            return dal;
         }
     }
 }

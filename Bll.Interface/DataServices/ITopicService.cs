@@ -9,8 +9,7 @@ namespace Bll.Interface.DataServices
 {
     public interface ITopicService: IService<Topic>
     {
+        IEnumerable<Topic> GetByCreator(long creatorId);
         Topic GetByName(string name);
-        IEnumerable<Topic> GetByCreator(User creator);
-        IEnumerable<Topic> GetMostPopular(int count);
     }
 }

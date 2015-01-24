@@ -5,3 +5,5 @@ d:\Project\Forum\Dal.Interface\bin\Debug\Interfaces.dll
 d:\Project\Forum\Dal.Interface\bin\Debug\Interfaces.pdb
 d:\Project\Forum\Dal.Interface\obj\Debug\Dal.Interface.dll
 d:\Project\Forum\Dal.Interface\obj\Debug\Dal.Interface.pdb
+d:\Project\Forum\Dal.Interface\bin\Debug\EntityFramework.dll
+d:\Project\Forum\Dal.Interface\bin\Debug\EntityFramework.xml

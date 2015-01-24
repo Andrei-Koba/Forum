@@ -9,70 +9,46 @@ using Dal.Interface.DataAccess;
 
 namespace Bll.Implementation.EntityMappers
 {
-    public class PostMapper: IEntityMapper<Post,DalPost>
+    public class PostMapper : IEntityMapper<Post, DalPost>
     {
 
-        protected IEntityRepository<DalTopic> _topics;
-        protected IEntityRepository<DalUser> _users;
-        protected IEntityMapper<User, DalUser> _userMapper;
-        protected IEntityMapper<Topic, DalTopic> _topicMapper;
+        private readonly IEntityMapper<User, DalUser> _userMapper;
+        private readonly IEntityMapper<Topic, DalTopic> _topicMapper;
 
-        public PostMapper(ITopicRepository topicRepository, IUserRepository userRepository,
-            IEntityMapper<User,DalUser> userMapper, IEntityMapper<Topic, DalTopic> topicMapper)
+        public PostMapper()
         {
-            _topics = topicRepository;
-            _users = userRepository;
-            _userMapper = userMapper;
-            _topicMapper = topicMapper;
-
+            _userMapper = new UserMapper();
+            _topicMapper = new TopicMapper();
         }
 
-        public Post GetEntityOne(DalPost dalEntity)
+        public Post GetBll(DalPost dalEntity)
         {
-           DalTopic dalTopic = _topics.FindById(dalEntity.TopicId);
-           Topic topic = _topicMapper.GetEntityOne(dalTopic);
-           DalUser dalUser = _users.FindById(dalEntity.AuthorId);
-           User user = _userMapper.GetEntityOne(dalUser);
-            return new Post()
-            {
-                Id = dalEntity.Id,
-                Topic = topic,
-                ResponseTo = dalEntity.ResponseTo,
-                Author = user,
-                Likes = dalEntity.Likes,
-                Dislikes = dalEntity.Dislikes,
-                IsBlocked = dalEntity.IsBlocked,
-                LastEdit = dalEntity.LastEdit,
-                Message = dalEntity.Message
-
-            };
+            Post bll = new Post();
+            bll.Author = _userMapper.GetBll(dalEntity.User);
+            bll.Dislikes = dalEntity.Dislikes;
+            bll.Id = dalEntity.Id;
+            bll.IsBlocked = dalEntity.IsBlocked;
+            bll.LastEdit = dalEntity.LastEdit;
+            bll.Likes = dalEntity.Likes;
+            bll.Message = dalEntity.Message;
+            bll.ResponseTo = dalEntity.ResponseTo;
+            bll.Topic = _topicMapper.GetBll(dalEntity.Topic);
+            return bll;
         }
 
-        public DalPost GetEntityTwo(Post bllEntity)
+        public DalPost GetDal(Post bllEntity)
         {
-            DalUser author = _users.Find(x => x.Name==bllEntity.Author.Name).Single();
-            DalTopic topic = _topics.Find(x => x.Name==bllEntity.Topic.Name).Single();
-            return new DalPost()
-            {
-                Id = bllEntity.Id,
-                Message = bllEntity.Message,
-                IsBlocked = bllEntity.IsBlocked,
-                Likes = bllEntity.Likes,
-                Dislikes = bllEntity.Dislikes,
-                LastEdit = bllEntity.LastEdit,
-                ResponseTo =  bllEntity.ResponseTo,
-                AuthorId = author.Id,
-                TopicId = topic.Id
-            };
-        }
-
-
-        public void Dispose()
-        {
-            _topics.Dispose();
-            _users.Dispose();
-            _userMapper.Dispose();
-            _topicMapper.Dispose();
+            DalPost dal = new DalPost();
+            dal.UserId = bllEntity.Author.Id;
+            dal.Dislikes = bllEntity.Dislikes;
+            dal.Id = bllEntity.Id;
+            dal.IsBlocked = bllEntity.IsBlocked;
+            dal.LastEdit = bllEntity.LastEdit;
+            dal.Likes = bllEntity.Likes;
+            dal.Message = bllEntity.Message;
+            dal.ResponseTo = bllEntity.ResponseTo;
+            dal.TopicId = bllEntity.Topic.Id;
+            return dal;
         }
     }
 }

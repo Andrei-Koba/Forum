@@ -5,9 +5,10 @@
     ViewBag.Title = @Model.TopicName;
 }
 
-<script type="text/javascript" 
-            src="@Url.Content("~/scripts/AjaxPost.js")">
-</script>
+<script type="text/javascript" src="@Url.Content("~/scripts/AjaxPost.js")"></script>
+
+
+<div id="ForNewTopic"></div>
 
 
 <h2>@Model.TopicName</h2>
@@ -37,11 +38,11 @@
                     }
                     @if (item.IsBlocked)
                     { 
-                        <p>Cообщение заблокированно модераторами форума.</p>
+                        <div class="@item.Id">Сообщение заблокированно модераторами форума.</div>
                     }
                     else
                     {
-                        <p>@item.Message</p>
+                        <div class="@item.Id">@item.Message</div>
                     }
                     <div class="col-md-12">
                         <hr />
@@ -56,11 +57,9 @@
                                 <input type="button" class="responseButton"  value="Ответить" />
                         }
                         </div>
-                        @if (ViewBag.Admin || ViewBag.Moder)
+                        @if (User.IsInRole("moderator"))
                         { 
-                            <form method="post" action="@Url.Action("Block","Post", new {topicId = Model.Id, postId = item.Id })">
-                                <input type="submit" value="Заблокировать" />
-                            </form>
+                            <input type="button" class="BlockButton" name="@item.Id" value="Заблокировать" />
                         }
                     </div>
                 </div>

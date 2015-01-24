@@ -9,7 +9,6 @@ D:\Project\Forum\ForumConsoleApplication\bin\Debug\Ninject.dll
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\Dal.Interface.dll
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\Dal.Implementation.dll
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\EntityFramework.dll
-D:\Project\Forum\ForumConsoleApplication\bin\Debug\Ninject.Web.Common.dll
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\Bll.Implementation.pdb
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\Bll.Interface.pdb
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\DependencyResolver.pdb
@@ -18,9 +17,11 @@ D:\Project\Forum\ForumConsoleApplication\bin\Debug\Ninject.xml
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\Dal.Interface.pdb
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\Dal.Implementation.pdb
 D:\Project\Forum\ForumConsoleApplication\bin\Debug\EntityFramework.xml
-D:\Project\Forum\ForumConsoleApplication\bin\Debug\Ninject.Web.Common.xml
 D:\Project\Forum\ForumConsoleApplication\obj\Debug\ForumConsoleApplication.csprojResolveAssemblyReference.cache
 D:\Project\Forum\ForumConsoleApplication\obj\Debug\ForumConsoleApplication.exe
 D:\Project\Forum\ForumConsoleApplication\obj\Debug\ForumConsoleApplication.pdb
 d:\Project\Forum\ForumConsoleApplication\bin\Debug\EntityFramework.SqlServer.dll
 d:\Project\Forum\ForumConsoleApplication\bin\Debug\EntityFramework.SqlServer.xml
+d:\Project\Backup\Version_1\ForumConsoleApplication\bin\Debug\ForumConsoleApplication.exe.config
+d:\Project\Backup\Version_1\ForumConsoleApplication\obj\Debug\ForumConsoleApplication.exe
+d:\Project\Backup\Version_1\ForumConsoleApplication\obj\Debug\ForumConsoleApplication.pdb

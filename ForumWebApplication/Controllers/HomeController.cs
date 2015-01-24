@@ -20,7 +20,6 @@ namespace ForumWebApplication.Controllers
         private IUserService _users;
         private ViewPostMapper _postMapper;
         private IPostService _posts;
-        private CustomRoleProvider _rp;
 
         public HomeController(ITopicService topics, ViewTopicMapper topicMapper, IUserService users, IPostService posts)
         {
@@ -29,28 +28,32 @@ namespace ForumWebApplication.Controllers
             _topicMapper = topicMapper;
             _users = users;
             _postMapper = new ViewPostMapper(_posts);
-            _rp = new CustomRoleProvider();
         }
 
         public ActionResult Index()
         {
-            IEnumerable<Topic> topics = _topics.GetAll();
+            IEnumerable<Topic> topics = _topics.GetAll().ToList();
             List<Topic> latest = topics.Where(x => (DateTime.Now - x.CreationDate).Days <= 0).ToList();
-            IEnumerable<Topic> popular = _topics.GetMostPopular(3);
-            IEnumerable<TopicViewModel> viewLatest = latest.Select(_topicMapper.GetEntityOne);
-            IEnumerable<TopicViewModel> viewPopular = popular.Select(_topicMapper.GetEntityOne);
+            IEnumerable<TopicViewModel> viewLatest = latest.Select(_topicMapper.GetBll).ToList();
             ViewBag.Latest = viewLatest;
-            ViewBag.Popular = viewPopular;
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name,"admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
+            if (Request.IsAuthenticated)
+            {
+                User user = _users.GetByLogin(User.Identity.Name);
+                IEnumerable<Topic> userTopics = _topics.GetByCreator(user.Id);
+                List<TopicViewModel> viewUserTopics = new List<TopicViewModel>();
+                foreach (var item in userTopics)
+                {
+                    TopicViewModel m = _topicMapper.GetBll(item);
+                    viewUserTopics.Add(m);
+                }
+                ViewBag.UserTopics = viewUserTopics;
+            }
             return View();
         }
 
         public ActionResult Topics()
         {
-            List<TopicViewModel> topics = _topics.GetAll().Select(_topicMapper.GetEntityOne).ToList();
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
+            List<TopicViewModel> topics = _topics.GetAll().Select(_topicMapper.GetBll).ToList();
             return View(topics); 
         }
 
@@ -59,36 +62,35 @@ namespace ForumWebApplication.Controllers
         {
             string login = User.Identity.Name;
             User user = _users.GetByLogin(login);
-            IEnumerable<Topic> userTopics = _topics.GetByCreator(user);
-            IEnumerable<TopicViewModel> viewUserTopics = userTopics.Select(_topicMapper.GetEntityOne);
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
+            IEnumerable<Topic> userTopics = _topics.GetByCreator(user.Id);
+            IEnumerable<TopicViewModel> viewUserTopics = userTopics.Select(_topicMapper.GetBll);
             return View(viewUserTopics);
         }
 
         [Authorize]
-        public ActionResult CreateTopic()
+        public ActionResult CreateTopicForm()
         {
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
-            TopicViewModel topic = new TopicViewModel();
-            return View(topic);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView();
+            }
+            return View();
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult CreateTopic(TopicViewModel topic)
+        public ActionResult CreateTopic()
         {
+            TopicViewModel topic = new TopicViewModel();
+            topic.Name = Request.Params["TopicName"];
             topic.CreationDate = DateTime.Now;
             string login = User.Identity.Name;
             User user = _users.GetByLogin(login);
             topic.Creator = user;
             topic.PostsCount = 0;
-            Topic bll = _topicMapper.GetEntityTwo(topic);
+            Topic bll = _topicMapper.GetDal(topic);
             _topics.Add(bll);
             Topic res = _topics.GetByName(bll.Name);
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             return RedirectToAction("TopicPosts",res);
         }
 
@@ -96,14 +98,12 @@ namespace ForumWebApplication.Controllers
         public ActionResult TopicPosts(long Id, int page = 1)
         {
             Topic topic = _topics.GetById(Id);
-            IEnumerable<ViewPost> posts = _posts.GetByTopic(topic).Select(_postMapper.GetEntityOne);
+            IEnumerable<ViewPost> posts = _posts.GetByTopic(topic.Id).Select(_postMapper.GetBll).ToList();
             TopicPostsModel res = new TopicPostsModel(posts, page, 4);
             res.Id = topic.Id;
             res.CreationDate = topic.CreationDate;
             res.TopicCreator = topic.Creator;
             res.TopicName = topic.Name;
-            ViewBag.Admin = _rp.IsUserInRole(User.Identity.Name, "admin");
-            ViewBag.Moder = _rp.IsUserInRole(User.Identity.Name, "moderator");
             return View(res);
         }
 
